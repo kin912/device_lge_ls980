@@ -1,5 +1,5 @@
 #
-# Copyright 2012 The Android Open Source Project
+# Copyright (C) 2016 The Paranoid Android Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,18 +14,21 @@
 # limitations under the License.
 #
 
-# Sample: This is where we'd set a backup provider if we had one
-# $(call inherit-product, device/sample/products/backup_overlay.mk)
+LOCAL_PATH := device/lge/ls980
 
-# Inherit from the common Open Source product configuration
-$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
+$(call inherit-product, device/lge/g2-common/common.mk)
+$(call inherit-product, vendor/lge/ls980/ls980-vendor.mk)
 
-PRODUCT_DEVICE := ls980
-PRODUCT_NAME := full_ls980
-PRODUCT_BRAND := LGE
-PRODUCT_MODEL := LG-LS980
-PRODUCT_MANUFACTURER := lge
-PRODUCT_RESTRICT_VENDOR_FILES := false
+## Overlays
+DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 
-# Inherit from hardware-specific part of the product configuration
-$(call inherit-product, device/lge/ls980/device.mk)
+# NFC packages
+PRODUCT_PACKAGES += \
+    nfc.default \
+    libnfc \
+    libnfc_jni \
+    Nfc
+
+# Sensors
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/sensor_def_ls980.conf:system/etc/sensor_def_variable.conf
